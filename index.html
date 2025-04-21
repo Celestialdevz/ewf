@@ -70,16 +70,22 @@
             text-decoration: none;
             font-size: 16px;
             padding: 8px 12px; /* Slightly reduced padding */
-            border-radius: 14px;
-            transition: background-color 0.2s ease; /* Faster transition */
+            border-radius: 14px; /* Default rounded corners */
+            transition: all 0.2s ease; /* Faster transition */
             background-color: transparent;
-            will-change: background-color; /* Performance optimization */
+            will-change: background-color, border-radius; /* Performance optimization */
         }
 
+        /* Hover/hold state - dark gray background */
         nav ul li a:hover, 
-        nav ul li a:active,
-        nav ul li a.active {
+        nav ul li a:active {
             background-color: #222;
+        }
+
+        /* Clicked state - blue background with less curved borders */
+        nav ul li a.clicked {
+            background-color: #1a4b8c; /* Blue background */
+            border-radius: 8px; /* Less curved borders */
         }
 
         nav ul li a i {
@@ -93,17 +99,23 @@
             color: #fff;
             border: none;
             padding: 8px 16px; /* Slightly reduced padding */
-            border-radius: 14px;
+            border-radius: 14px; /* Default rounded corners */
             font-weight: bold;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.2s ease; /* Faster transition */
+            transition: all 0.2s ease; /* Faster transition */
             margin-left: 15px; /* Reduced margin */
-            will-change: background-color; /* Performance optimization */
+            will-change: background-color, border-radius; /* Performance optimization */
         }
 
         .login-btn:hover {
             background-color: #333;
+        }
+
+        /* Clicked state for login button */
+        .login-btn.clicked {
+            background-color: #1a4b8c; /* Blue background */
+            border-radius: 8px; /* Less curved borders */
         }
 
         /* Main content styles */
@@ -283,6 +295,59 @@
 
         // Navigation active state
         const navLinks = document.querySelectorAll('.nav-btn');
+        const loginBtn = document.querySelector('.login-btn.desktop-login');
+        
+        // Handle click state for navigation buttons
+        navLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove clicked class from all links
+                navLinks.forEach(l => l.classList.remove('clicked'));
+                
+                // Add clicked class to the clicked link
+                this.classList.add('clicked');
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+                
+                // Close mobile menu if open
+                menu.classList.remove('active');
+                
+                // Remove clicked class after a delay
+                setTimeout(() => {
+                    this.classList.remove('clicked');
+                }, 1000);
+            });
+        });
+        
+        // Handle click state for login button
+        loginBtn.addEventListener('click', function() {
+            this.classList.add('clicked');
+            
+            // Remove clicked class after a delay
+            setTimeout(() => {
+                this.classList.remove('clicked');
+            }, 1000);
+        });
+        
+        // Mobile login button
+        const mobileLoginBtn = document.querySelector('.mobile-login .login-btn');
+        if (mobileLoginBtn) {
+            mobileLoginBtn.addEventListener('click', function() {
+                this.classList.add('clicked');
+                
+                // Remove clicked class after a delay
+                setTimeout(() => {
+                    this.classList.remove('clicked');
+                }, 1000);
+            });
+        }
         
         // Debounce function to improve performance
         function debounce(func, wait = 10, immediate = true) {
@@ -312,36 +377,13 @@
                 
                 if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
                     navLinks.forEach(link => {
-                        link.classList.remove('active');
                         if (link.getAttribute('href') === `#${sectionId}`) {
-                            link.classList.add('active');
+                            // Don't add 'clicked' class here to avoid conflict with click event
                         }
                     });
                 }
             });
         }, 10);
-
-        // Smooth scrolling for anchor links
-        navLinks.forEach(anchor => {
-            anchor.addEventListener('click', function(e) {
-                e.preventDefault();
-                
-                // Remove active class from all links and add to clicked link
-                navLinks.forEach(link => link.classList.remove('active'));
-                this.classList.add('active');
-                
-                const targetId = this.getAttribute('href');
-                const targetElement = document.querySelector(targetId);
-                
-                window.scrollTo({
-                    top: targetElement.offsetTop - 80,
-                    behavior: 'smooth'
-                });
-                
-                // Close mobile menu if open
-                menu.classList.remove('active');
-            });
-        });
 
         // Reveal sections on scroll - optimized
         const revealSections = debounce(() => {
