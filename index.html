@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Website</title>
+    <title>Galaxy</title>
     <style>
         /* Reset and base styles */
         * {
@@ -59,21 +59,20 @@
         }
 
         nav ul li {
-            margin: 0 5px; /* Reduced margin between nav items */
+            margin: 0 5px;
         }
 
-        /* Nav button styles - matching the image */
+        /* Nav button styles */
         nav ul li a {
             display: flex;
             align-items: center;
             color: #fff;
             text-decoration: none;
             font-size: 16px;
-            padding: 8px 12px; /* Slightly reduced padding */
+            padding: 8px 12px;
             border-radius: 14px; /* Default rounded corners */
-            transition: all 0.2s ease; /* Faster transition */
+            transition: all 0.1s ease; /* Faster transition */
             background-color: transparent;
-            will-change: background-color, border-radius; /* Performance optimization */
         }
 
         /* Hover/hold state - dark gray background */
@@ -84,8 +83,8 @@
 
         /* Clicked state - blue background with less curved borders */
         nav ul li a.clicked {
-            background-color: #1a4b8c; /* Blue background */
-            border-radius: 8px; /* Less curved borders */
+            background-color: #1a4b8c !important; /* Blue background - !important to override any other styles */
+            border-radius: 6px !important; /* Much less curved borders - !important to ensure it applies */
         }
 
         nav ul li a i {
@@ -98,14 +97,13 @@
             background-color: #222;
             color: #fff;
             border: none;
-            padding: 8px 16px; /* Slightly reduced padding */
+            padding: 8px 16px;
             border-radius: 14px; /* Default rounded corners */
             font-weight: bold;
             font-size: 16px;
             cursor: pointer;
-            transition: all 0.2s ease; /* Faster transition */
-            margin-left: 15px; /* Reduced margin */
-            will-change: background-color, border-radius; /* Performance optimization */
+            transition: all 0.1s ease; /* Faster transition */
+            margin-left: 15px;
         }
 
         .login-btn:hover {
@@ -114,8 +112,8 @@
 
         /* Clicked state for login button */
         .login-btn.clicked {
-            background-color: #1a4b8c; /* Blue background */
-            border-radius: 8px; /* Less curved borders */
+            background-color: #1a4b8c !important; /* Blue background */
+            border-radius: 6px !important; /* Much less curved borders */
         }
 
         /* Main content styles */
@@ -133,8 +131,7 @@
             padding: 40px 0;
             opacity: 0;
             transform: translateY(20px);
-            transition: opacity 0.5s ease, transform 0.5s ease; /* Faster transition */
-            will-change: opacity, transform; /* Performance optimization */
+            transition: opacity 0.5s ease, transform 0.5s ease;
         }
 
         section.visible {
@@ -209,7 +206,7 @@
             }
         }
 
-        /* Animation for icons - simplified for better performance */
+        /* Animation for icons */
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -217,7 +214,7 @@
         }
 
         nav ul li a:hover i {
-            animation: pulse 0.8s ease-in-out; /* Shorter animation */
+            animation: pulse 0.8s ease-in-out;
         }
     </style>
     <!-- Font Awesome for icons -->
@@ -293,11 +290,11 @@
             menu.classList.toggle('active');
         });
 
-        // Navigation active state
+        // Navigation buttons
         const navLinks = document.querySelectorAll('.nav-btn');
         const loginBtn = document.querySelector('.login-btn.desktop-login');
         
-        // Handle click state for navigation buttons
+        // Handle click state for navigation buttons - SIMPLIFIED
         navLinks.forEach(link => {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
@@ -305,12 +302,13 @@
                 // Remove clicked class from all links
                 navLinks.forEach(l => l.classList.remove('clicked'));
                 
-                // Add clicked class to the clicked link
+                // Add clicked class to the clicked link - IMMEDIATE EFFECT
                 this.classList.add('clicked');
                 
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
                 
+                // Scroll to the section
                 window.scrollTo({
                     top: targetElement.offsetTop - 80,
                     behavior: 'smooth'
@@ -349,44 +347,8 @@
             });
         }
         
-        // Debounce function to improve performance
-        function debounce(func, wait = 10, immediate = true) {
-            let timeout;
-            return function() {
-                const context = this, args = arguments;
-                const later = function() {
-                    timeout = null;
-                    if (!immediate) func.apply(context, args);
-                };
-                const callNow = immediate && !timeout;
-                clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-                if (callNow) func.apply(context, args);
-            };
-        }
-        
-        // Set active class based on scroll position
-        const setActiveNav = debounce(() => {
-            const sections = document.querySelectorAll('section');
-            const scrollPosition = window.scrollY;
-            
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - 100;
-                const sectionHeight = section.offsetHeight;
-                const sectionId = section.getAttribute('id');
-                
-                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-                    navLinks.forEach(link => {
-                        if (link.getAttribute('href') === `#${sectionId}`) {
-                            // Don't add 'clicked' class here to avoid conflict with click event
-                        }
-                    });
-                }
-            });
-        }, 10);
-
-        // Reveal sections on scroll - optimized
-        const revealSections = debounce(() => {
+        // Reveal sections on scroll
+        function revealSections() {
             const sections = document.querySelectorAll('section');
             const windowHeight = window.innerHeight;
             
@@ -396,28 +358,15 @@
                     section.classList.add('visible');
                 }
             });
-        }, 10);
+        }
 
         // Initialize
         window.addEventListener('DOMContentLoaded', () => {
-            setActiveNav();
             revealSections();
             document.querySelector('#home').classList.add('visible');
         });
         
-        window.addEventListener('scroll', () => {
-            setActiveNav();
-            revealSections();
-        });
-        
-        // Preload Font Awesome to prevent icon flicker
-        window.addEventListener('load', () => {
-            const link = document.createElement('link');
-            link.rel = 'preload';
-            link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
-            link.as = 'style';
-            document.head.appendChild(link);
-        });
+        window.addEventListener('scroll', revealSections);
     </script>
 </body>
 </html>
