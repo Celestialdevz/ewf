@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Website</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            min-height: 100vh;
+        }
+
+        /* Header styles */
+        header {
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 100;
+        }
+
+        /* Logo styles */
+        .logo {
+            width: 60px;
+            height: 60px;
+        }
+
+        /* Navigation styles */
+        nav {
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin: 0 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            transition: color 0.3s ease;
+        }
+
+        nav ul li a:hover {
+            color: #ccc;
+        }
+
+        /* Button styles */
+        .btn {
+            background-color: #222;
+            color: #fff;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: #333;
+        }
+
+        .login-btn {
+            margin-left: 30px;
+        }
+
+        /* Main content styles */
+        main {
+            padding: 120px 40px 40px;
+        }
+
+        section {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px 0;
+        }
+
+        h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 18px;
+            max-width: 800px;
+            margin-bottom: 40px;
+            color: #ccc;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 20px;
+        }
+
+        /* Mobile menu styles */
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+        }
+
+        /* Media queries for responsive design */
+        @media (max-width: 768px) {
+            header {
+                padding: 20px;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            nav ul {
+                position: fixed;
+                top: 80px;
+                left: 0;
+                width: 100%;
+                background-color: #111;
+                flex-direction: column;
+                align-items: center;
+                padding: 20px 0;
+                transform: translateY(-150%);
+                transition: transform 0.3s ease;
+            }
+
+            nav ul.active {
+                transform: translateY(0);
+            }
+
+            nav ul li {
+                margin: 15px 0;
+            }
+
+            .login-btn {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+
+            .desktop-login {
+                display: none;
+            }
+
+            .mobile-login {
+                display: block;
+            }
+        }
+
+        @media (min-width: 769px) {
+            .mobile-login {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <svg viewBox="0 0 100 100">
+                <circle cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="2"></circle>
+                <circle cx="50" cy="50" r="35" fill="none" stroke="white" stroke-width="2" stroke-dasharray="5 5"></circle>
+            </svg>
+        </div>
+        
+        <nav>
+            <button class="mobile-menu-btn">☰</button>
+            <ul id="menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#infos">Infos</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#download">Download</a></li>
+                <li class="mobile-login"><button class="btn">Log In</button></li>
+            </ul>
+            <button class="btn login-btn desktop-login">Log In</button>
+        </nav>
+    </header>
+
+    <main>
+        <section id="home">
+            <h1>Welcome to Our Platform</h1>
+            <p>Experience the next generation of digital solutions with our cutting-edge platform.</p>
+            <div class="buttons">
+                <button class="btn">Purchase</button>
+            </div>
+        </section>
+
+        <section id="infos">
+            <h1>Information</h1>
+            <p>Learn more about our platform and how it can help transform your digital experience.</p>
+        </section>
+
+        <section id="features">
+            <h1>Features</h1>
+            <p>Discover the powerful features that make our platform stand out from the competition.</p>
+        </section>
+
+        <section id="download">
+            <h1>Download</h1>
+            <p>Get started today by downloading our application.</p>
+            <button class="btn">Download Now</button>
+        </section>
+    </main>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const menu = document.getElementById('menu');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            menu.classList.toggle('active');
+        });
+
+        // Close menu when clicking on a link
+        const menuLinks = document.querySelectorAll('#menu a');
+        menuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                menu.classList.remove('active');
+            });
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                const targetId = this.getAttribute('href');
+                const targetElement = document.querySelector(targetId);
+                
+                window.scrollTo({
+                    top: targetElement.offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
