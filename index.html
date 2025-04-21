@@ -59,7 +59,7 @@
         }
 
         nav ul li {
-            margin: 0 10px;
+            margin: 0 5px; /* Reduced margin between nav items */
         }
 
         /* Nav button styles - matching the image */
@@ -69,10 +69,11 @@
             color: #fff;
             text-decoration: none;
             font-size: 16px;
-            padding: 10px 15px;
+            padding: 8px 12px; /* Slightly reduced padding */
             border-radius: 14px;
-            transition: all 0.3s ease;
+            transition: background-color 0.2s ease; /* Faster transition */
             background-color: transparent;
+            will-change: background-color; /* Performance optimization */
         }
 
         nav ul li a:hover, 
@@ -91,13 +92,14 @@
             background-color: #222;
             color: #fff;
             border: none;
-            padding: 10px 20px;
+            padding: 8px 16px; /* Slightly reduced padding */
             border-radius: 14px;
             font-weight: bold;
             font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s ease;
-            margin-left: 20px;
+            transition: background-color 0.2s ease; /* Faster transition */
+            margin-left: 15px; /* Reduced margin */
+            will-change: background-color; /* Performance optimization */
         }
 
         .login-btn:hover {
@@ -119,7 +121,8 @@
             padding: 40px 0;
             opacity: 0;
             transform: translateY(20px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
+            transition: opacity 0.5s ease, transform 0.5s ease; /* Faster transition */
+            will-change: opacity, transform; /* Performance optimization */
         }
 
         section.visible {
@@ -165,7 +168,7 @@
             }
 
             nav ul li {
-                margin: 10px 0;
+                margin: 8px 0;
                 width: 80%;
             }
 
@@ -194,7 +197,7 @@
             }
         }
 
-        /* Animation for icons */
+        /* Animation for icons - simplified for better performance */
         @keyframes pulse {
             0% { transform: scale(1); }
             50% { transform: scale(1.1); }
@@ -202,7 +205,7 @@
         }
 
         nav ul li a:hover i {
-            animation: pulse 1s infinite;
+            animation: pulse 0.8s ease-in-out; /* Shorter animation */
         }
     </style>
     <!-- Font Awesome for icons -->
@@ -281,8 +284,24 @@
         // Navigation active state
         const navLinks = document.querySelectorAll('.nav-btn');
         
+        // Debounce function to improve performance
+        function debounce(func, wait = 10, immediate = true) {
+            let timeout;
+            return function() {
+                const context = this, args = arguments;
+                const later = function() {
+                    timeout = null;
+                    if (!immediate) func.apply(context, args);
+                };
+                const callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+                if (callNow) func.apply(context, args);
+            };
+        }
+        
         // Set active class based on scroll position
-        function setActiveNav() {
+        const setActiveNav = debounce(() => {
             const sections = document.querySelectorAll('section');
             const scrollPosition = window.scrollY;
             
@@ -300,12 +319,16 @@
                     });
                 }
             });
-        }
+        }, 10);
 
         // Smooth scrolling for anchor links
         navLinks.forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
+                
+                // Remove active class from all links and add to clicked link
+                navLinks.forEach(link => link.classList.remove('active'));
+                this.classList.add('active');
                 
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
@@ -320,8 +343,8 @@
             });
         });
 
-        // Reveal sections on scroll
-        function revealSections() {
+        // Reveal sections on scroll - optimized
+        const revealSections = debounce(() => {
             const sections = document.querySelectorAll('section');
             const windowHeight = window.innerHeight;
             
@@ -331,10 +354,10 @@
                     section.classList.add('visible');
                 }
             });
-        }
+        }, 10);
 
         // Initialize
-        window.addEventListener('load', () => {
+        window.addEventListener('DOMContentLoaded', () => {
             setActiveNav();
             revealSections();
             document.querySelector('#home').classList.add('visible');
@@ -343,6 +366,15 @@
         window.addEventListener('scroll', () => {
             setActiveNav();
             revealSections();
+        });
+        
+        // Preload Font Awesome to prevent icon flicker
+        window.addEventListener('load', () => {
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css';
+            link.as = 'style';
+            document.head.appendChild(link);
         });
     </script>
 </body>
