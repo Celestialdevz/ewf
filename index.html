@@ -29,12 +29,22 @@
             width: 100%;
             top: 0;
             z-index: 100;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
         }
 
         /* Logo styles */
         .logo {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-text {
+            margin-left: 10px;
+            font-weight: bold;
+            font-size: 20px;
         }
 
         /* Navigation styles */
@@ -49,39 +59,49 @@
         }
 
         nav ul li {
-            margin: 0 20px;
+            margin: 0 10px;
         }
 
+        /* Nav button styles - matching the image */
         nav ul li a {
+            display: flex;
+            align-items: center;
             color: #fff;
             text-decoration: none;
             font-size: 16px;
-            transition: color 0.3s ease;
+            padding: 10px 15px;
+            border-radius: 14px;
+            transition: all 0.3s ease;
+            background-color: transparent;
         }
 
-        nav ul li a:hover {
-            color: #ccc;
+        nav ul li a:hover, 
+        nav ul li a:active,
+        nav ul li a.active {
+            background-color: #222;
         }
 
-        /* Button styles */
-        .btn {
+        nav ul li a i {
+            margin-right: 8px;
+            font-size: 18px;
+        }
+
+        /* Login button style */
+        .login-btn {
             background-color: #222;
             color: #fff;
             border: none;
-            padding: 12px 24px;
-            border-radius: 50px;
+            padding: 10px 20px;
+            border-radius: 14px;
             font-weight: bold;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
+            margin-left: 20px;
         }
 
-        .btn:hover {
+        .login-btn:hover {
             background-color: #333;
-        }
-
-        .login-btn {
-            margin-left: 30px;
         }
 
         /* Main content styles */
@@ -97,23 +117,14 @@
             align-items: center;
             text-align: center;
             padding: 40px 0;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
         }
 
-        h1 {
-            font-size: 48px;
-            margin-bottom: 20px;
-        }
-
-        p {
-            font-size: 18px;
-            max-width: 800px;
-            margin-bottom: 40px;
-            color: #ccc;
-        }
-
-        .buttons {
-            display: flex;
-            gap: 20px;
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Mobile menu styles */
@@ -154,7 +165,13 @@
             }
 
             nav ul li {
-                margin: 15px 0;
+                margin: 10px 0;
+                width: 80%;
+            }
+
+            nav ul li a {
+                width: 100%;
+                justify-content: center;
             }
 
             .login-btn {
@@ -176,53 +193,79 @@
                 display: none;
             }
         }
+
+        /* Animation for icons */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        nav ul li a:hover i {
+            animation: pulse 1s infinite;
+        }
     </style>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <header>
+        <!-- Logo placeholder - replace with your own -->
         <div class="logo">
-            <svg viewBox="0 0 100 100">
-                <circle cx="50" cy="50" r="45" fill="none" stroke="white" stroke-width="2"></circle>
-                <circle cx="50" cy="50" r="35" fill="none" stroke="white" stroke-width="2" stroke-dasharray="5 5"></circle>
-            </svg>
+            <!-- Your custom logo goes here -->
+            <div class="logo-placeholder">
+                <!-- This is just a placeholder, replace with your own logo -->
+                <i class="fas fa-circle"></i>
+            </div>
+            <span class="logo-text">Your Brand</span>
         </div>
         
         <nav>
             <button class="mobile-menu-btn">☰</button>
             <ul id="menu">
-                <li><a href="#home">Home</a></li>
-                <li><a href="#infos">Infos</a></li>
-                <li><a href="#features">Features</a></li>
-                <li><a href="#download">Download</a></li>
-                <li class="mobile-login"><button class="btn">Log In</button></li>
+                <li>
+                    <a href="#home" class="nav-btn">
+                        <i class="fas fa-home"></i> Home
+                    </a>
+                </li>
+                <li>
+                    <a href="#infos" class="nav-btn">
+                        <i class="fas fa-info-circle"></i> Infos
+                    </a>
+                </li>
+                <li>
+                    <a href="#features" class="nav-btn">
+                        <i class="fas fa-star"></i> Features
+                    </a>
+                </li>
+                <li>
+                    <a href="#download" class="nav-btn">
+                        <i class="fas fa-download"></i> Download
+                    </a>
+                </li>
+                <li class="mobile-login">
+                    <button class="login-btn">Log In</button>
+                </li>
             </ul>
-            <button class="btn login-btn desktop-login">Log In</button>
+            <button class="login-btn desktop-login">Log In</button>
         </nav>
     </header>
 
     <main>
         <section id="home">
-            <h1>Welcome to Our Platform</h1>
-            <p>Experience the next generation of digital solutions with our cutting-edge platform.</p>
-            <div class="buttons">
-                <button class="btn">Purchase</button>
-            </div>
+            <!-- Content will be added by the user -->
         </section>
 
         <section id="infos">
-            <h1>Information</h1>
-            <p>Learn more about our platform and how it can help transform your digital experience.</p>
+            <!-- Content will be added by the user -->
         </section>
 
         <section id="features">
-            <h1>Features</h1>
-            <p>Discover the powerful features that make our platform stand out from the competition.</p>
+            <!-- Content will be added by the user -->
         </section>
 
         <section id="download">
-            <h1>Download</h1>
-            <p>Get started today by downloading our application.</p>
-            <button class="btn">Download Now</button>
+            <!-- Content will be added by the user -->
         </section>
     </main>
 
@@ -235,16 +278,32 @@
             menu.classList.toggle('active');
         });
 
-        // Close menu when clicking on a link
-        const menuLinks = document.querySelectorAll('#menu a');
-        menuLinks.forEach(link => {
-            link.addEventListener('click', () => {
-                menu.classList.remove('active');
+        // Navigation active state
+        const navLinks = document.querySelectorAll('.nav-btn');
+        
+        // Set active class based on scroll position
+        function setActiveNav() {
+            const sections = document.querySelectorAll('section');
+            const scrollPosition = window.scrollY;
+            
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute('id');
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    navLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href') === `#${sectionId}`) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
             });
-        });
+        }
 
         // Smooth scrolling for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        navLinks.forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 
@@ -255,7 +314,35 @@
                     top: targetElement.offsetTop - 80,
                     behavior: 'smooth'
                 });
+                
+                // Close mobile menu if open
+                menu.classList.remove('active');
             });
+        });
+
+        // Reveal sections on scroll
+        function revealSections() {
+            const sections = document.querySelectorAll('section');
+            const windowHeight = window.innerHeight;
+            
+            sections.forEach(section => {
+                const sectionTop = section.getBoundingClientRect().top;
+                if (sectionTop < windowHeight - 150) {
+                    section.classList.add('visible');
+                }
+            });
+        }
+
+        // Initialize
+        window.addEventListener('load', () => {
+            setActiveNav();
+            revealSections();
+            document.querySelector('#home').classList.add('visible');
+        });
+        
+        window.addEventListener('scroll', () => {
+            setActiveNav();
+            revealSections();
         });
     </script>
 </body>
